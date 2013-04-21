@@ -29,7 +29,7 @@ The sample applications are packaged in a single apps.tar.gz file. Uncompressed,
 				a deterministic recursive program example.
 	laplace		-- a parallel heat transfer simulation program using
 				a relaxed fixed point algorithm.
-	raytrace	-- a parallel ray tracer using POV and Synergy.
+	raytrace	-- a parallel ray tracer using POV and Synergy. 
 	albm		-- a matrix multiplication example. This program
 				can automatically balance the fluctuating
         work loads of heterogeneous processors
