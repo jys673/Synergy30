@@ -43,6 +43,3 @@ The sample applications are packaged in a single apps.tar.gz file. Uncompressed,
 Note:
   These examples are projects from CIS undergraduate and graduate students' projects. They are only rudimentally tested. The idea is to show how to compose data parallel applications that can leverage the Statistic Multiplexed Computing architecture. Please report any problems and comments to shi@temple.edu.
 				
-
-3. nssc -- Non-solution space compact programs (these applications can generate superlinear speedups)
-	msort 		-- a parallel C mergesort system, a demonstration of pipe usage.
