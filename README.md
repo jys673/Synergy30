@@ -3,7 +3,7 @@ Synergy30+ Evaluation Release  (c)Temple University 1995-2013
 
 Synergy 3.0+ is a prototype of SM-HPC (Statistic Multiplexed High Performance Computing) System. Unlike existing HPC systems, SM-HPC focuses on harnessing volatile resources. The goal is to allow SM-HPC applications to gain performance and reliability at the same time when adding computing nodes and networks.
 
-The Synergy3.0 runtime is under ~/synergy/bin. It should be included in $PATH. $SNG_PATH should point to ~/synergy.  Source code are installed under the directory "synergy". A single "makefile" compiles all.
+The Synergy3.0 runtime is under ~/synergy/bin. It should be included in $PATH. $SNG_PATH should point to ~/synergy.  Source code are installed under the directory "synergy". A single "makefile" compiles all. File "GettingStarted" is a user's manual primer.
 
 The sample applications are packaged in a separate Synergy3.0+Apps.tar.gz file. Uncompressed, there are two subdirectories:
 
