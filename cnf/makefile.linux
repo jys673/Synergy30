@@ -1,0 +1,32 @@
+OBJS = conf.o conf_2.o parser.o lexan.o 
+
+all : conf  move clean
+
+conf:		$(OBJS)
+		cc $(OBJS) -lfl -o conf  $(SYS_LINK) $(SYS_LIB)
+
+parser.o:	parser.c
+		cc -c parser.c
+#		yacc -d parser.y
+#		cc -g -c y.tab.c
+#		mv y.tab.o parser.o
+#		rm y.tab.c
+
+lexan.o:	lexan.l lex.c
+		lex lexan.l
+		cc -c lex.yy.c
+		mv lex.yy.o lexan.o
+# 		rm lex.yy.c
+
+conf.o:		conf.c 
+		cc -c  $(SYS_TYPE) $(SYS_INCLUDE) \
+		-I. conf.c 
+
+conf_2.o:	conf_2.c conf.h conf_2.h
+		cc -c conf_2.c
+
+move : 
+	mv  conf ../bin
+
+clean :
+	/bin/rm -f *.o

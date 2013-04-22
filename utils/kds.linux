@@ -1,0 +1,9 @@
+#!/bin/bash
+cds -f
+cut --bytes=1-15 .snghosts > X.temp
+for m in $(cat X.temp); do
+	echo contacting $m
+	ssh $m 'killall pmd'
+	ssh $m 'killall cid'
+done
+rm X.temp

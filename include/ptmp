@@ -1,0 +1,6 @@
+#define Linux     1
+#define SunOs     0
+#define Ultrix    0
+#define OSF1      0
+#define AIX       0
+#define EPIX      0

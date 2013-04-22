@@ -1,0 +1,81 @@
+
+			    Synergy V3.0+ Final Release
+
+	      		(C) Copyright 1990-2013 Temple University
+		       	        All Rights Reserved
+
+		         (U.S. Patents #5,381,534, #5,517,656)
+
+This Synergy V3.0+ Final Release will enable you to configure, free of 
+charge, multiple networked Unix/Linux computers for processing applications in parallel.
+Synergy is a preliminary implementation of a Stateless Machine (SLM) but fully useable in any
+Linux/Unix clusters include Ubuntu, RedHat(TM), Solaris, and other similar environments.
+
+This free license is only for research and education purposes. Commercial use of the 
+system and accompanied documentation without a written consent from the Office 
+of Technology Transfer of Temple University may constitute an infringement to 
+the approved patents.
+
+NO technical support will be provided for this release. Please visit the Synergy Project 
+website for technical assistance: http://spartan.cis.temple.edu/synergy.
+
+For commercial licenses, please contact:
+
+Office of Technology Transfer
+Temple University 
+Philadelphia, PA 19122 
+Phone: (215) 204-7762
+Fax: (215) 204-7486
+
+===============================================================================
+
+CAREFULLY READ ALL TERMS AND CONDITIONS OF THIS LICENSE AGREEMENT BEFORE 
+REQUESTING INSTALLATION OF THIS SOFTWARE.  REQUESTING INSTALLATION OF THIS 
+SOFTWARE INDICATES YOUR ACCEPTANCE OF THE TERMS AND CONDITIONS OF THIS 
+LICENSE AGREEMENT.
+
+			LICENSE AGREEMENT
+
+This Synergy V3.0+ Final Release (hereinafter, the "Software") and its 
+documentation are the sole property of Temple University (hereinafter, 
+"Temple"), and are both protected by applicable copyright laws. Your right 
+to use the Software and its documentation is limited by the following terms 
+and conditions:
+
+1.  Limited Non-Exclusive License
+
+(a) During the term of this Agreement you may, free of charge: (i) use the 
+Software for non-commercial research and educational purposes, within 
+your own institution or across multiple institutions; 
+(ii) copy and distribute the Software, provided 
+that you include this Agreement and the copyright notice on each copy.
+
+(b) You may not, at any time: (i) rent, lease or grant sublicenses or any 
+other rights to the Software; (ii) use the Software for any commercial 
+purposes;  or (iii) alter or remove from the Software or from its documentation 
+any identification, including copyright and trademark notices, which 
+indicates ownership by Temple.
+
+3.  Limitation of Liability
+
+(a)  You agree to accept the Software as delivered and understand that 
+Temple will not provide maintenance, installation services, debugging, 
+improvements or support of any kind, and will not accept liability for any 
+damage to the Software.
+
+(b) Temple University makes no warranties, either express or implied, as to any matter 
+whatsoever, including without limitation, the condition of the Software, or 
+its fitness for any particular purpose, or that use of the Software will not 
+infringe any patent, right or trademark owned by any party other than Temple. 
+Temple shall not be liable for any direct, consequential, or other damages 
+suffered by you, your institution or any others resulting from the use of 
+the Software.
+
+5.  Governing Law
+
+This Agreement shall be governed by the laws of the Commonwealth of 
+Pennsylvania.
+
+INSTALLATION OF THIS SOFTWARE INDICATES YOUR ACCEPTANCE OF 
+THE TERMS AND CONDITIONS OF THIS LICENSE AGREEMENT.
+=============================================================================

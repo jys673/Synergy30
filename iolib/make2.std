@@ -1,0 +1,3 @@
+move :
+	mv libb.a ../obj/libsng.a
+	/bin/rm -f *.o

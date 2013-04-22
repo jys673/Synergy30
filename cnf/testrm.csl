@@ -1,0 +1,3 @@
+configuration: testrm;
+
+m: testrm ->f: testsp(type = ts); 

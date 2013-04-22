@@ -1,0 +1,9 @@
+#!/bin/bash
+rm -f X.temp
+rm -f Y.temp
+cds > X.temp 
+cut --bytes=20-42 X.temp > Y.temp
+for m in $(cat Y.temp); do
+	echo contacting $m
+	ssh $m 'cid 2'
+done

@@ -1,0 +1,39 @@
+/* xpc.c. A program forked by "bcr" and is responsible for talk to CID */
+
+#include "synergy.h"
+
+int main (argc, argv)
+int argc;
+char **argv;
+{
+  cid_host_port  l_cid;
+  cid_recieve_bc a;
+  u_short        this_op;
+  int            sock;
+
+sscanf(argv[1], "%ul\0", &l_cid.hostid);
+l_cid.port = atoi(argv[2]);
+strcpy(a.bckey, argv[3]);
+strcpy(a.appid, argv[4]);
+strcpy(a.name, argv[5]);
+a.priority = atoi(argv[6]);
+sscanf(argv[7], "%ul\0", &a.host);
+a.port = atoi(argv[8]);
+a.opflag = atoi(argv[9]);
+
+  this_op    = a.opflag;
+
+  if ((sock = get_socket()) != -1)
+  {
+    if (do_connect(sock, l_cid.hostid, l_cid.port))
+    {
+      if (writen(sock, (char *)&this_op, sizeof(u_short)))
+	{
+        if (writen(sock, (char *)&a, sizeof(cid_recieve_bc)))
+	{ ; }
+	}
+    }
+    close(sock);
+  }
+}
+

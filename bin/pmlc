@@ -1,0 +1,9 @@
+#!/bin/sh
+PARA_HOME=/usr/local/Parallelizer
+
+CLASSPATH=$PARA_HOME/lib/jaxp-api.jar:$PARA_HOME/lib/sax.jar:$PARA_HOME/lib/xercesImpl.jar:$PARA_HOME/classes
+
+
+java -cp $CLASSPATH -Dparallelizer.home=$PARA_HOME edu.temple.cis.fsun.phd.startup.Parallelizer -source $1
+
+#cp parallel.h

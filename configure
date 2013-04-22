@@ -1,0 +1,128 @@
+#!/bin/sh
+
+#######################################################
+# configure OS
+valid_os="SunOS, Linux"
+
+
+	echo "Checking operating system ..."
+
+	if [ -f /bin/uname ]; then 
+		case "`/bin/uname`" in
+  		"Linux")
+                        echo "Linux"
+                        os="Linux"
+                        break;
+                ;;
+		"SunOS")
+			echo "SunOS1"
+			os="SunOs"
+			break
+		;;
+		esac
+	fi
+
+	#some SunOs may different ...
+	if [ -z "${os}" ]; then
+		if [ -f /bin/sun ]; then
+			/bin/sun 2>/dev/null >/dev/null
+			if [ $?  -eq 0 ]; then
+				echo "SunOS2"
+				os="SunOS"
+			fi
+		fi
+	fi
+
+if [ -z "${os}"  ]; then
+	echo unknown operating system. Trying to configure by default...
+fi
+
+#end of OS configure
+
+################################################################
+echo .
+echo Fixing header files ...
+case "${os}" in
+        "Linux")
+		echo Configuring for Linux...
+                echo "#define Linux     1">./include/ptmp
+                echo "#define SunOs     0">>./include/ptmp
+                echo "#define Ultrix    0">>./include/ptmp
+                echo "#define OSF1      0">>./include/ptmp
+                echo "#define AIX       0">>./include/ptmp
+                echo "#define EPIX      0">>./include/ptmp
+                echo "SYS_LINK=-L/usr/lib">>./tmp
+		break 		;;
+	"SunOs")	
+		echo Configuring for SunOS...
+                echo "#define Linux     0">./include/ptmp
+		echo "#define SunOs	1">./include/ptmp
+		echo "#define Ultrix	0">>./include/ptmp
+		echo "#define OSF1	0">>./include/ptmp
+		echo "#define AIX	0">>./include/ptmp
+		echo "#define EPIX	0">>./include/ptmp
+		echo "EXTRA= -lnsl -lsocket">>./tmp
+		break		;;
+esac
+cat ./include/ptmp ./include/portab.h.std >./include/portab.h
+
+#Setup bin directory
+echo "Setup bin ..."
+cd ./bin
+
+echo "`whoami`" >>./synergy.user
+
+#Fix iolib/makefile
+cp ../iolib/make1.std ../iolib/makefile.std2
+case "${os}" in
+	"SunOs")
+		echo "	ranlib ./libb.a" >>../iolib/makefile.std2
+		cp KILL.b500 KILL
+		cp sds.b500 sds
+		break ;;
+	"linux")
+		cp KILL.linux KILL
+		cp sds.linux sds
+		break ;;
+esac
+cat ../iolib/makefile.std2 ../iolib/make2.std >../iolib/makefile 2>/dev/null
+
+#Fix files
+case "${os}" in
+        "Linux")
+        break;;
+esac
+
+#Fix cnf/makefile
+case "${os}" in
+        "Linux")
+        break;;
+esac
+
+#Fix cid/makefile
+#sed s,"CIDPATH","`pwd`",g ../cid/make1.std > ../cid/makefile.std
+#cp ../cid/make1.std ../cid/makefile.std
+
+#Back to root
+cd ..
+echo "Creating makefiles ... "
+	cat ./tmp ./cnf/makefile.std>./cnf/makefile 2>/dev/null
+	cat ./tmp ./dac/makefile.std>./dac/makefile 2>/dev/null
+	cat ./tmp ./cid/makefile.std>./cid/makefile 2>/dev/null
+	cat ./tmp ./pmd/makefile.std>./pmd/makefile 2>/dev/null
+	cat ./tmp ./tsh/makefile.std>./tsh/makefile 2>/dev/null
+	cat ./tmp ./ntsh/makefile.std>./ntsh/makefile 2>/dev/null
+	cat ./tmp ./fah/makefile.std>./fah/makefile 2>/dev/null
+	cat ./tmp ./ssh/makefile.std>./ssh/makefile 2>/dev/null
+	cat ./tmp ./libtest/makefile.std>./libtest/makefile 2>/dev/null
+	cat ./tmp ./utils/makefile.std>./utils/makefile 2>/dev/null
+	cat ./tmp ./fdd/makefile.std>./fdd/makefile 2>/dev/null
+	cat ./tmp ./ntsh/makefile.std>./ntsh/makefile 2>/dev/null
+	cat ./tmp ./api_lib/makefile.std>./api_lib/makefile 2>/dev/null
+
+###Now cleanup 
+cd ../../..	#back to $SNG_PATH
+rm -f tmp 
+#cp docs/Getting-started .
+#cp docs/Group-notes .
+echo "DONE."

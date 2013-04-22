@@ -1,0 +1,6 @@
+#!/bin/csh
+echo "Displaying Getting-started"
+more $SNG_PATH/DOCS/Getting-started
+echo "Displaying README.1st"
+more $SNG_PATH/DOCS/README.1st
+echo "Displaying SNG_MAN"

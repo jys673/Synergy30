@@ -1,0 +1,19 @@
+SYS_LINK=-L/usr/lib
+SYS_LINK=-L/usr/lib
+SYS_LINK=-L/usr/lib
+INCS = -I../include
+OBJS = ../obj 
+FLAGS = -O 
+cc = gcc
+
+all : tsh tshtest move 
+
+tsh : tsh.c 
+	$(cc) $(EXTRA) $(INCS) $(FLAGS) -o tsh tsh.c -L$(OBJS) -lsng
+
+tshtest : tshtest.c 
+	$(cc) $(EXTRA) $(INCS) $(FLAGS) -o tshtest tshtest.c -L$(OBJS) -lsng
+
+move :
+	mv tsh ../bin
+	mv tshtest ../bin

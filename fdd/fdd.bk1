@@ -1,0 +1,227 @@
+/*.........................................................................*/
+/*             FDD.C ------> Fault Detecter Daemon            		   */
+/*.........................................................................*/
+
+#include "fdd.h"
+
+/*---------------------------------------------------------------------------
+  Prototype   : int main(int argc, char **argv)
+  Parameters  :
+  Returns     : Never returns 
+  Called by   :
+  Calls       :
+  Notes       :
+  Date        :
+  Coded by    :
+  Modification:
+---------------------------------------------------------------------------*/  
+
+int main(argc, argv)
+int argc; 
+char **argv;
+{
+	if (argc != 3)
+		exit(E_ARGCNT);
+
+	dacport = atoi(argv[1]);		/* obtain DAC port */
+	debug = atoi(argv[2]);
+	host_list = NULL;
+	host_end = NULL;
+	hlist_cnt = 0;
+
+	dachostid = sng_gethostid();
+	initFdd();
+	startFdd();
+}
+
+
+/*---------------------------------------------------------------------------
+  Prototype   : void initFdd(void)
+  Parameters  : -
+  Returns     : -
+  Called by   : main
+  Calls       :
+  Notes       :
+  Date        : October' 1994
+  Coded by    : Feijian Sun
+  Modification:
+---------------------------------------------------------------------------*/  
+
+void initFdd()
+{
+	host_t * p_q; 
+	u_short cidport;
+	char mapid[MAP_LEN];
+
+	if (gethostlist(dacport, &host_list, &host_end, &clist_cnt)) {
+	    p_q = host_list;
+	    while (p_q != NULL) {
+	        sprintf(mapid,"sng$cid$%s",p_q->login);
+		if (!(cidport = pmd_getmap(mapid,p_q->hostid,(u_short)PMD_PROT_TCP)))
+		{
+		    printf("FDD_error: Remote host lookup failure.\n");
+		    exit(1);
+		}
+		p_q->cidport = cidport;
+		p_q->fault_flag = 0;
+		p_q = p_q->next;
+	    }
+	} else {
+	    printf("FDD_error: Failed to get host_list.\n");
+	    exit(1);
+	}
+
+        if (!gethandlerlist(dacport, &handler_list, &handler_end, &hlist_cnt)) {
+            printf("FDD_error: Failed to get host_list.\n");
+            exit(1);
+        }
+}
+
+
+/*---------------------------------------------------------------------------
+  Prototype   : void startFdd(void)
+  Parameters  : -
+  Returns     : -
+  Called by   : main
+  Calls       :
+  Notes       :
+  Date        : October' 1994
+  Coded by    : Feijian Sun
+  Modification:
+---------------------------------------------------------------------------*/
+
+void startFdd()
+{
+	host_t *p_q;
+	int substat, ccidid, kcidid;
+	char ccid_path[128], kcid_path[128];
+	char app_id_str[APP_LEN], proc_id_str[32];
+	char hostid_str[32], cidport_str[32];
+
+	p_q = host_list;
+	while (TRUE) {
+	    substat = 0;
+	    if (!p_q->fault_flag) {
+		sprintf(ccid_path, "%s/bin/fdd_ccid", getenv("SNG_PATH"));
+		sprintf(app_id_str, "%s", p_q->app_id);
+		sprintf(proc_id_str, "%d", p_q->proc_id);
+		sprintf(hostid_str, "%d", p_q->hostid);
+		sprintf(cidport_str, "%d", p_q->cidport);
+		if ((ccidid = fork()) == 0) {
+			execl(ccid_path, "fdd_ccid", hostid_str, 
+				cidport_str, app_id_str, proc_id_str, 
+				(char *)0);
+                        exit(1);
+		}
+		if (ccidid < 0) {
+			printf("Fdd_error: Fork ccid failure.\n");
+			exit(2);
+		}
+		if (wait(&substat) < 0) {
+			printf("Fdd_error: Wait ccid failure.\n");
+			exit(3);
+		}
+		if (WIFEXITED(substat))
+			substat = WEXITSTATUS(substat);
+		else
+			substat = 2;
+		if (substat != 0) {
+printf(" Warning: Loosing host(%u) pid(%d) stat(%d)\n", p_q->hostid, 
+	p_q->proc_id, substat);
+			sprintf(kcid_path, "%s/bin/fdd_kcid", getenv("SNG_PATH"));
+			p_q->fault_flag = 1;
+			if (p_q->hostid == dachostid && substat == 2) {
+				printf("FDD: CID on DAC_host dead...FDD exit!\n");
+				exit(1);
+			}
+			if (fddchangeproc(dacport, p_q) != 1)
+				exit(4);
+			if (Tfddretrievetuple(handler_end, p_q) != 1)
+				exit(5);
+/*
+			if ((kcidid = fork()) == 0) {
+				execl(kcid_path, "fdd_kcid", hostid_str,
+						cidport_str, (char *)0);
+				kcid(p_q->hostid, p_q->cidport);
+				exit(5);
+			}
+			if (kcidid < 0) {
+				printf("Fdd_error: Fork kcid failure.\n");
+				exit(6);
+			}
+			printf("Fdd: Cid down (%u) ...Kill it!\n", p_q->hostid);  
+*/
+		}
+	    }
+	    if (p_q->next != NULL) p_q = p_q->next;
+	    else {
+		p_q = host_list;
+/*	        sleep(100*(1/hlist_cnt)); */
+		sleep(15-hlist_cnt);
+	    }
+	}
+}
+
+
+/*---------------------------------------------------------------------------
+  Prototype   : int Tfddretrievetuple(handlerinfo_t *handler_list, 
+				host_t *deadhost)
+  Parameters  : -
+  Returns     : -
+  Called by   : startFdd
+  Calls       :
+  Notes       :
+  Date        : October' 1994
+  Coded by    : Feijian Sun
+  Modification:
+---------------------------------------------------------------------------*/
+
+int Tfddretrievetuple(handler_list, deadhost)
+handlerinfo_t *handler_list;
+host_t *deadhost;
+{
+        tsh_retrieve_it out;
+        handlerinfo_t *p_q;
+        int tsh_sock; 
+	u_short tshop;
+        u_short tsh_port;
+
+        out.host = deadhost->hostid;
+	out.proc_id = htonl(deadhost->proc_id);
+        p_q = handler_list;
+        tshop = htons(TSH_OP_RETRIEVE);
+
+        while (p_q != NULL) {
+            if (p_q->type == 't') {
+		p_q->host = inet_addr(p_q->inet_addr);
+                if ((tsh_port = sngd_getmap(p_q->mapid, p_q->host, p_q->login, PMD_PROT_TCP)) < 0) {
+                        perror("DACLIB_fddretrievetuple::sngd_getmap\n");
+                        return(0);
+                }
+                if ((tsh_sock = get_socket()) == -1) {
+                        perror("DACLIB_fddretrievetuple::get_socket\n") ;
+                        return(0);
+                }
+printf("-- Automatic Tuple Recovery: host(%u) opcode(%u)\n", p_q->host, 
+			ntohs(tshop));
+                if (!do_connect(tsh_sock, p_q->host, tsh_port)) {
+                        perror("DACLIB_fddretrievetuple::do_connect\n");
+                        return(0);
+                }
+                if (!writen(tsh_sock, (char *)&tshop, sizeof(u_short))) {
+                        close(tsh_sock);
+                        return(0);
+		}
+                if(!writen(tsh_sock, (char *)&out, sizeof(tsh_retrieve_it))) {
+                        close(tsh_sock);
+                        return(0);
+                }
+
+                close(tsh_sock);
+	    }
+            p_q = p_q->next;
+        }
+        return(1);
+}
+
+

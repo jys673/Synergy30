@@ -1,0 +1,171 @@
+/* This program (BCP.c) is forked by CID to receive bcast messages. It also
+ * forks a child upon receipt of a bcast message.
+ * Author: Feijian Sun
+ * April 20, 1996
+ */
+
+#include        "bcr.h"
+
+int main(argc, argv)
+int     argc;
+char    *argv[];
+{
+  char                    bcid[BCKEY_LEN], socket_len[32];
+  u_long 		  lcid_hostid;
+  sng_int16		  lcid_port;
+  int			  start_xpc_flag= 0;
+  int                     sockfd, xpc_pid, lcliaddr, i;
+  struct sockaddr_in      serv_addr, cli_addr;
+  cid_recieve_bc          in_bc;
+  char 			  *temp;
+
+  strcpy(bcid, argv[1]);
+  strcpy(bchostid, argv[2]);
+  strcpy(bcport, argv[3]);
+
+  sscanf(argv[2], "%ul\0", &lcid_hostid);
+  lcid_port = atoi(argv[3]);
+
+printf("BCR:bchostid:(%s), bcport:(%s)\n", bchostid, bcport);
+printf("BCR:lcid_hostid:(%ul)\n", lcid_hostid);
+printf("BCR:lcid_port:(%d)\n", lcid_port);
+
+  sprintf(BCR_PATH,"%s/bin",getenv("SNG_PATH")); 
+  sprintf(XPC_PATH, "%s/xpc", BCR_PATH);
+  /*
+   * Open a UDP socket (an Internet datagram socket).
+   */
+  if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+    exit(1);
+  /*
+   * Bind any local address for us.
+   */
+  bzero((char *) &serv_addr, sizeof(serv_addr));    /* zero out */
+  serv_addr.sin_family      = AF_INET;
+  serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  serv_addr.sin_port        = htons(SERV_UDP_PORT);
+
+  if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
+  {
+    close(sockfd);
+    exit(1);
+  }
+
+  lcliaddr = sizeof(cli_addr);
+  bcq_i= 0;		/* Initializing the pointers */
+  while (TRUE)
+  {
+    if (recvfrom(sockfd, (char *) &in_bc, sizeof(cid_recieve_bc), 0, 
+                         (struct sockaddr *) &cli_addr, &lcliaddr) < 0)
+    {
+printf("BCR::recieve\n") ;
+      close(sockfd);
+      exit(1);
+    }
+
+printf("BCR:in_bc.host:(%ul)\n", in_bc.host);
+printf("BCR:in_bc.port:(%d)\n", in_bc.port);
+
+    if (!strcmp(in_bc.bckey, bcid) && (in_bc.host != lcid_hostid) &&
+				      (in_bc.port != lcid_port))
+    {
+      bcopy((char *)&in_bc, (char *)&bc_q[bcq_i], sizeof(in_bc));
+      if (++bcq_i == BCQ_LEN) 
+      { 
+printf("BCR::BC queue bcq_i:(%d)\n", bcq_i) ;
+        fprintf(stderr, "BCR::BC queue\n") ;
+        exit(1) ;
+      }
+      if (start_xpc_flag == 0)
+      {
+	start_xpc_flag = 1;
+        bc_socket = (cid_recieve_bc *)
+		     malloc(sizeof(cid_recieve_bc)*bcq_i);
+	sprintf(socket_len, "%d", sizeof(cid_recieve_bc)*bcq_i);
+	i = 0;
+	do {
+	  bcopy((char *)&bc_q[i], (char *)&bc_socket[i], 
+				  sizeof(cid_recieve_bc));
+	  i++;
+	} while (i == bcq_i);
+
+printf("BCR:bcq_i:(%d), socket_len:(%s)\n",bcq_i, socket_len);
+
+temp = (char *)malloc(socket_len);
+bcopy((char *)bc_socket, temp, socket_len);
+printf("BCR:bc_socket[0].host:(%ul)\n", bc_socket[0].host);
+printf("BCR:bc_socket[0].port:(%d)\n", bc_socket[0].port);
+
+	bcq_i= 0;
+        if ((xpc_pid = fork()) == 0 )
+        {
+          execl(XPC_PATH, XPC_PATH, bchostid, bcport, temp, 
+						socket_len, (char *)0) ;
+                                   /* exec failed, should never happen */
+printf("BCR:XPC::failed\n") ;
+          exit(-1);
+        }
+        if (signal(SIGCHLD, sigchldHandler) == (void *)-1)
+        {
+printf("BCR::signal\n") ;
+          fprintf(stderr, "BCR::signal\n") ;
+          exit(1) ;
+        }
+      }
+    }
+  }
+printf("BCR::final return\n") ;
+  free(bc_socket); 
+  close(sockfd);
+  exit(0);
+}
+
+
+/*---------------------------------------------------------------------------
+  Prototype   : void sigchldHandler(void)
+  Parameters  : -
+  Returns     : -
+  Called by   : BCR 
+  Calls       :
+  Notes       : 
+  Date        : 
+  Coded by    :
+  Modification: 
+---------------------------------------------------------------------------*/
+
+void sigchldHandler()
+{
+        char    socket_len[32];
+        int     xpc_pid, i;
+
+printf("BCR::sig start\n") ;
+
+	free(bc_socket); 
+        bc_socket = (cid_recieve_bc *)
+                     malloc(sizeof(cid_recieve_bc)*bcq_i);
+	i = 0;
+        do {
+          bcopy((char *)&bc_q[i], (char *)&bc_socket[i],
+                                  sizeof(cid_recieve_bc));
+          i++;
+        } while (i == bcq_i);
+        bcq_i = 0;
+
+        if ((xpc_pid = fork()) == 0 )
+        {
+          execl(XPC_PATH, XPC_PATH, bchostid, bcport, (char *)bc_socket,
+						socket_len, (char *)0) ;
+                                   /* exec failed, should never happen */
+printf("BCR::XPC failed\n") ;
+          exit(-1);
+        }
+        if (signal(SIGCHLD, sigchldHandler) == (void *)-1)
+        {
+printf("BCR::signal\n") ;
+          fprintf(stderr, "BCR::signal\n") ;
+          exit(1) ;
+        }
+printf("BCR::sig end\n") ;
+}
+
+

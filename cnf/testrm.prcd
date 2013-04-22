@@ -1,0 +1,17 @@
+testrm
+%
+testrm
+NA /usr/users/shi/synergy/cnf/testrm NA
+129.32.92.68 */testrm shi
+prot = tcp 
+f = 0
+p = 4
+t = 1
+d = 0
+!
+t * testsp testsp
+:
+@
+t testsp 129.32.92.66 shi
+-
+:

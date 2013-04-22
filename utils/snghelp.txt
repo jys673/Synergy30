@@ -1,0 +1,48 @@
+		     SYNERGY V3.0 COMMAND SUMMARY
+				  o o
+                                   ~
+				Yuan Shi
+		 Synergy newsgroup: temple.class.synergy
+			   September 9, 1995
+
+Console
+Command:	Description:
+============	============================================================
+(Processor Selection)
+---------------------
+chosts		Selection and de-select hosts. Only selected hosts are 
+			responsive to the following commands.
+
+(Daemon Commands) 
+-----------------
+sds		Automatically starts remote daemons on selected hosts.
+			(Note: Please issue %KILL rsh immediately after this
+				command since it leaves many rsh processes
+				hanging there. Will fix it later.)
+kds		Kills remote daemons on selected hosts.
+cds		Checks remote daemons on selected hosts (w/ benchmark tests)
+
+(Application)
+-------------
+prun <apps> [&]	Starts a parallel application with a "apps.csl" spec. 
+prun <apps> debug
+		Starts a parallel application in debugging mode.
+prun <apps> -ft
+		Starts a parallel application with fault tolerance option.
+pcheck		Check, monitor or kill parallel applications & tasks.
+
+(Hostfile Setup) #Do not use in CTC. Read the newsgroup for details.
+----------------
+#shosts [ipaddr]	
+		Creates ~/.sng_hosts using "ipaddr". 
+#addhost [ipaddr] [login] [-f]
+		Adds a host. "-f" forces an entry even if it's not alive.
+#delhost [ipaddr] [-f]
+		Deletes a host. Without "-f" a Synergy ready node will NOT
+		be removed.
+#sfs		Set files systems (only used when multiple clusters)
+
+(Misc.)
+-------
+KILL <string>	Kills (-9) all YOUR processes with a match with "string".
+			For example, %KILL rsh will kill all rsh processes.

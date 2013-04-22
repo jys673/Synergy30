@@ -1,0 +1,58 @@
+#!/bin/sh
+
+# this is a self test program, please read. 
+# It tries to run the ttest (tuple test) program in $SNG_PATH/apps/ttest
+# Should any problem occur, you can always type in these commands by hand 
+# please refer to $SNG_PATH/docs/Getting-stared.
+# 
+# Jonathan Wang, Temple University, 1994 
+
+echo "Creating sample .csl files in apps directory ..."
+
+cd $SNG_PATH/apps/ttest
+sed s,"hostname::directory","`hostname`::`pwd`",g ./ttest.csl.std > ./ttest.csl
+cd ../ptest
+sed s,"hostname::directory","`hostname`::`pwd`",g ./ptest.csl.std > ./ptest.csl
+cd ../ftest
+sed s,"hostname::directory","`hostname`::`pwd`",g ./ftest.csl.std > ./ftest.csl
+cd ../msort
+sed s,"hostname::directory","`hostname`::`pwd`",g ./msort.csl.std > ./msort.csl
+cd ../fractal
+sed s,"hostname::directory","`hostname`::`pwd`",g ./fractal.csl.std > ./fractal.csl
+cd ../deptest
+sed s,"hostname::directory","`hostname`::`pwd`",g ./deptest.csl.std > ./deptest.csl
+
+#fortran apps
+cd $SNG_PATH/apps/fortran/ttest
+sed s,"hostname::directory","`hostname`::`pwd`",g ./ttest.csl.std > ./ttest.csl
+cd ../ptest
+sed s,"hostname::directory","`hostname`::`pwd`",g ./ptest.csl.std > ./ptest.csl
+cd ../ftest
+sed s,"hostname::directory","`hostname`::`pwd`",g ./ftest.csl.std > ./ftest.csl
+
+# Start daemons 
+# Notice this is optional. SNG (synergy shell) will start daemons for you
+# however, SNG uses rexec to start the daemons. You will lose your output.
+# in cases we need to see the output, we can either start daemons by hand
+# as we are doing here, or log the output to a file.
+
+cd $SNG_PATH/apps/ttest
+make
+$SNG_PATH/bin/pmd &
+$SNG_PATH/bin/cid &
+
+echo "==================================================================="
+echo "We are starting SNG (Syenrgy Shell)"
+echo "At menu prompt, select 1. (Start execution)"
+echo "Should any problem occurs, please refer to $SNG_PATH/docs/Getting-started"
+echo "Hit enter now"
+echo "===================================================================="
+
+read enter
+
+$SNG_PATH/bin/SNG ttest
+
+echo "===================================================================="
+echo "If the error# reported was 0, congratulations!"
+echo "Your SYNERGY system is operational."
+

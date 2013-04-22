@@ -1,0 +1,20 @@
+SYS_LINK=-L/usr/lib
+SYS_LINK=-L/usr/lib
+SYS_LINK=-L/usr/lib
+INCS = -I../include
+OBJS = ../obj 
+FLAGS = -O 
+cc = gcc
+
+all : fdd_ccid fdd_kcid fdd move 
+
+fdd_ccid : fdd_ccid.c
+	$(cc) $(EXTRA) $(INCS) $(FLAGS) -o fdd_ccid fdd_ccid.c -L$(OBJS) -lsng
+fdd_kcid : fdd_kcid.c
+	$(cc) $(EXTRA) $(INCS) $(FLAGS) -o fdd_kcid fdd_kcid.c -L$(OBJS) -lsng
+fdd : fdd.c 
+	$(cc) $(EXTRA) $(INCS) $(FLAGS) -o fdd fdd.c -L$(OBJS) -lsng
+move : fdd fdd_ccid fdd_kcid
+	mv fdd ../bin
+	mv fdd_ccid ../bin
+	mv fdd_kcid ../bin

@@ -1,0 +1,9 @@
+#!/bin/bash
+cds -f
+cut -b 1-13 .snghosts > X.temp
+for m in $(cat X.temp); do
+	echo contacting $m
+	ssh $m "KILL pmd"
+	ssh $m "KILL cid"
+done
+rm X.temp

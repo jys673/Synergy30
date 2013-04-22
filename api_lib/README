@@ -1,0 +1,4 @@
+This directory hold the extended Tuple Space API calls required by the PML compiler generated Synergy programs. The make file will load the compiled program to the libsng.a object library.
+
+Justin Y. Shi
+2/2013

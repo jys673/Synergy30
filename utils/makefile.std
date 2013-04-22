@@ -1,0 +1,41 @@
+FLAGS = -O3 -o
+cc = gcc
+
+all: dhost sfs shost addhost delhost chosts cds kds kobjs move 
+
+dhost: dhost.c
+	$(cc) $(EXTRA) -I../include $(FLAGS) dhosts dhost.c
+
+sfs: sfs.c
+	$(cc) $(EXTRA) -I../include $(FLAGS) sfs sfs.c
+
+shost: shost.c
+	$(cc) $(EXTRA) -I../include $(FLAGS) shosts shost.c
+
+addhost: addhost.c
+	$(cc) $(EXTRA) -I../include $(FLAGS) addhost addhost.c
+
+delhost: delhost.c
+	$(cc) $(EXTRA) -I../include $(FLAGS) delhost delhost.c
+
+chosts: chosts.c
+	$(cc) $(EXTRA) -I../include $(FLAGS) chosts chosts.c
+
+cds: cds.c
+	$(cc) $(EXTRA) -I../include $(FLAGS) cds cds.c -L../obj -lsng
+
+kds:	kds.c
+	$(cc) $(EXTRA) -I../include $(FLAGS) kds kds.c -L../obj -lsng
+
+kobjs:	kobjs.c
+	$(cc) $(EXTRA)  -I../include $(FLAGS) kobjs kobjs.c -L../obj -lsng
+
+move: 
+	mv sfs ../bin
+	mv shosts ../bin
+	mv addhost ../bin
+	mv delhost ../bin
+	mv dhosts ../bin
+	mv chosts ../bin
+	mv cds ../bin
+	mv kobjs ../bin

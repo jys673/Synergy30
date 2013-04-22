@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example Parallelizer Configuration File -->
+
+<Server name="MdsFileServer" port="8005">
+  <Service name="xyz_Service" pollingInMins="1">
+    <Processor name="xyz_Processor"
+               inputType="MDS6"
+               clientRoot="c:\TestGround\Parallelizer"
+               inputPath="input"
+               fixPath="fix"
+               completePath="complete"
+               errorPath="error"
+               processOrderFile="processorder"
+               dependenciesFile="dependencies"
+               inputWaitInHours="6"
+               fixWaitInHours="0"
+               clientId="JRH_TEST"
+               source="ANNA_ME"
+               clinservx="false"
+               unitx="false"
+               unit15="false"
+               processDueDays="1"
+               priority="0"
+               emailTo="fsun@carescience.com"
+               maxHeadThreads="2"
+               maxDataThreads="5"
+               />
+  </Service>
+
+  <Service name="abc_Service" pollingInMins="1">
+    <Processor name="abc_Processor"
+               inputType="MDS7"
+               clientRoot="c:\TestGround\Parallelizer"
+               inputPath="input"
+               fixPath="fix"
+               completePath="complete"
+               errorPath="error"
+               processOrderFile="processorder"
+               dependenciesFile="dependencies"
+               inputWaitInHours="6"
+               fixWaitInHours="0"
+               clientId="CMTEST"
+               source="CMTEST"
+               clinservx="false"
+               unitx="false"
+               unit15="false"
+               processDueDays="1"
+               priority="1"
+               emailTo="fsun@carescience.com"
+               maxHeadThreads="2"
+               maxDataThreads="5"
+               />
+  </Service>
+</Server>

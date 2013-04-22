@@ -1,0 +1,7 @@
+This is the PML compiler. To run:
+
+%java parallelizer.jar
+
+The Java source is in the /src directory.
+
+

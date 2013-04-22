@@ -1,0 +1,109 @@
+INCL = -I../include
+FLAGS = -c -O3 
+EXTRA = 
+cc = gcc
+
+all : cnf_init.o cnf_open.o cnf_close.o cnf_read.o cnf_write.o cnf_tsread.o \
+	cnf_getf.o cnf_getP.o cnf_gett.o cnf_getarg.o \
+	cnf_tsput.o cnf_print_map.o cnf_tsget.o cnf_term.o \
+	cnf_fgets.o cnf_fputs.o cnf_fgetc.o cnf_fputc.o cnf_fread.o \
+	cnf_fwrite.o cnf_fflush.o cnf_fseek.o daclib.o pmdlib.o cidlib.o \
+	cnf_dput.o cnf_dget.o cnf_dread.o cnf_dinit.o cnf_gts.o \
+	netlib.o wall_clock.o archive ranl move
+#cnf_x_tsput.o cnf_x_tsget.o cnf_x_tsread.o  \
+#cnf_x_read.o cnf_x_write.o cnf_x_fread.o cnf_x_fwrite.o \
+#cnf_x_fputs.o cnf_x_fgets.o \
+
+wall_clock.o : wall_clock.c
+	$(cc) $(EXTRA) $(INCL) $(FLAGS) wall_clock.c $(TAIL)
+f77.o : f77.c $(TAIL)
+	$(cc) $(EXTRA) $(INCL) $(FLAGS)  f77.c $(TAIL)
+f77sun.o : f77sun.c $(TAIL)
+	$(cc) $(EXTRA) $(INCL) $(FLAGS)  f77sun.c $(TAIL)
+cnf_getf.o : cnf_getf.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_getf.c $(TAIL)
+cnf_getP.o : cnf_getP.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_getP.c $(TAIL)
+cnf_gett.o : cnf_gett.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_gett.c $(TAIL)
+cnf_getarg.o : cnf_getarg.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_getarg.c $(TAIL)
+cnf_print_map.o : cnf_print_map.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_print_map.c $(TAIL)
+cnf_init.o: cnf_init.c $(TAIL) 
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_init.c $(TAIL)
+cnf_open.o : cnf_open.c $(TAIL) 
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_open.c $(TAIL)
+cnf_close.o : cnf_close.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_close.c $(TAIL)
+cnf_read.o : cnf_read.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_read.c $(TAIL)
+cnf_write.o : cnf_write.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_write.c $(TAIL)
+cnf_dinit.o : cnf_dinit.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_dinit.c $(TAIL)
+cnf_dread.o : cnf_dread.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_dread.c $(TAIL)
+cnf_dput.o : cnf_dput.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_dput.c $(TAIL)
+cnf_dget.o : cnf_dget.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_dget.c $(TAIL)
+cnf_tsread.o : cnf_tsread.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_tsread.c $(TAIL)
+cnf_tsput.o : cnf_tsput.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_tsput.c $(TAIL)
+cnf_tsget.o : cnf_tsget.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_tsget.c $(TAIL)
+cnf_term.o: cnf_term.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_term.c $(TAIL)
+cnf_fputs.o: cnf_fputs.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_fputs.c $(TAIL)
+cnf_fgets.o: cnf_fgets.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_fgets.c $(TAIL)
+cnf_fputc.o: cnf_fputc.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_fputc.c $(TAIL)
+cnf_fgetc.o: cnf_fgetc.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_fgetc.c $(TAIL)
+cnf_fseek.o: cnf_fseek.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_fseek.c $(TAIL)
+cnf_fflush.o: cnf_fflush.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_fflush.c $(TAIL)
+cnf_fread.o: cnf_fread.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_fread.c $(TAIL)
+cnf_fwrite.o: cnf_fwrite.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cnf_fwrite.c $(TAIL)
+pmdlib.o : pmdlib.c $(TAIL) 
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  pmdlib.c $(TAIL)
+netlib.o : netlib.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  netlib.c $(TAIL)
+cidlib.o : cidlib.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  cidlib.c $(TAIL)
+daclib.o : daclib.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS)  daclib.c $(TAIL)
+cnf_x_tsput.o : cnf_x_tsput.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_tsput.c $(TAIL)
+cnf_x_tsget.o : cnf_x_tsget.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_tsget.c $(TAIL)
+cnf_x_tsread.o : cnf_x_tsread.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_tsread.c $(TAIL)
+cnf_x_read.o : cnf_x_read.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_read.c $(TAIL)
+cnf_x_write.o : cnf_x_write.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_write.c $(TAIL)
+cnf_x_fread.o : cnf_x_fread.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_fread.c $(TAIL)
+cnf_x_fwrite.o : cnf_x_fwrite.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_fwrite.c $(TAIL)
+cnf_x_fgets.o : cnf_x_fgets.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_fgets.c $(TAIL)
+cnf_x_fputs.o : cnf_x_fputs.c $(TAIL)
+	$(cc) $(EXTRA)  $(INCL) $(FLAGS) cnf_x_fputs.c $(TAIL)
+cnf_gts.o : cnf_gts.c
+	$(cc) $(EXTRA) $(INCL) $(FLAGS) cnf_gts.c $(TAIL)
+archive : 
+	ar rcv libb.a *.o
+ranl:
+	ranlib ./libb.a
+move :
+	mv libb.a ../obj/libsng.a
+	/bin/rm -f *.o
