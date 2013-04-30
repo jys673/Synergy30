@@ -1,6 +1,7 @@
 SYS_LINK=-L/usr/lib
 SYS_LINK=-L/usr/lib
 SYS_LINK=-L/usr/lib
+SYS_LINK=-L/usr/lib
 OBJS = conf.o conf_2.o parser.o lexan.o 
 cc = gcc
 lex = flex

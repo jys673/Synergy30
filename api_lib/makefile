@@ -1,6 +1,7 @@
 SYS_LINK=-L/usr/lib
 SYS_LINK=-L/usr/lib
 SYS_LINK=-L/usr/lib
+SYS_LINK=-L/usr/lib
 EXTRA = $(SYS_TYPE) $(SYS_LINK)
 INCS = -I../include
 FLAGS = -O3 -c

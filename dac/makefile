@@ -1,6 +1,7 @@
 SYS_LINK=-L/usr/lib
 SYS_LINK=-L/usr/lib
 SYS_LINK=-L/usr/lib
+SYS_LINK=-L/usr/lib
 EXTRA =
 INCS = -I../include
 OBJS = ../obj 

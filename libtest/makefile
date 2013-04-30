@@ -1,6 +1,7 @@
 SYS_LINK=-L/usr/lib
 SYS_LINK=-L/usr/lib
 SYS_LINK=-L/usr/lib
+SYS_LINK=-L/usr/lib
 INCL = -I../include
 OBJS = -L../obj -lsng
 cc = gcc

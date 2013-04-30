@@ -3,44 +3,46 @@
    Author: Yuan Shi
    Feburay 1994
 */
+#include "synergy.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <string.h>
 
 #define MAX_PORTLEN 8
-#define RSH_COMMAND "/usr/bin/rsh"
+#define RSH_COMMAND "/usr/bin/ssh"
+#define MAX_LEN 128
 
 main ()
 {
 	FILE *infile;
 	char *buf;
-	char ipaddr[32], login[32], host[128], home[128], filenm[128];
-	char local_host[128], hostname[128], fsys[5];
-	int  status, i, j, k;
+	char ipaddr[MAX_LEN], login[MAX_LEN], host[MAX_LEN], 
+		home[MAX_LEN], filenm[MAX_LEN];
+	char last_host[MAX_LEN], hostname[MAX_LEN], fsys[MAX_LEN];
   	char cmd[256];
 
 	gethostname(hostname,sizeof(hostname));
 	sprintf(home,"%s", getenv("HOME"));
 	sprintf(filenm,"%s/.sng_hosts",home);
+	bzero(last_host, MAX_LEN);
 	if ((infile = fopen(filenm, "r")) !=NULL)
  	{
-		status = fscanf(infile, "%s %s %s %s %s %s",
-			ipaddr, host, home, home, login, fsys);
-  		while (status > 0) 
+		while( fscanf(infile, "%s %s %s %s %s %s",
+			ipaddr, host, home, home, login, fsys) > 0 )
 		{
-			if (ipaddr[0] != '#')
+			// printf(" found host (%s) login(%s)\n",ipaddr, login);
+			if ((ipaddr[0] != '#') && strcmp(last_host,ipaddr))
 			{
-			if (!strcmp(hostname,host)) 
-				start_local("cid &");
-			else {
-				start_remote(host,login,"/usr/local/synergy/bin/cid &");
-			} 
+				if (strcmp(hostname,ipaddr)==0) // So we can see the STDIO in the log 
+					system("~/synergy/bin/cid&");
+				else 
+				start_remote(host,login,"~/synergy/bin/cid &");
+				strcpy(last_host, ipaddr);
 			}
-			status = fscanf(infile, "%s %s %s %s %s %s",
-				ipaddr, host, home,home, login, fsys );
 		}
-	}
+		exit (0);
+	} printf("Node file not found. Nothing to do...\n"); 
 	exit(1);
 }
 

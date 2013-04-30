@@ -78,24 +78,25 @@ char *hostnm;
    if (!do_connect(sock, cid_host, cidport))
     {
        printf("(%s) \t\tCID down\n",hostnm) ;
-       return ;
     }
-   this_op = htons(CID_OP_EXIT);
-   if (!writen(sock, (char *)&this_op, sizeof(this_op)))
-    {
-       printf("Error in writing CID\n") ;
-       exit(1) ;
-    } 
+   else {
+   	this_op = htons(CID_OP_EXIT);
+   	if (!writen(sock, (char *)&this_op, sizeof(this_op)))
+    	{
+       		printf("Error in writing CID\n") ;
+       		exit(1) ;
+    	} 
+   }
    close (sock); 
    if (!(sock = get_socket()))
    {
 	perror(" cannot get socket? \n");
 	exit(1);
    }
-   if (!do_connect(sock, cid_host, PMD_PORT))
+   if (!do_connect(sock, cid_host, htons(PMD_PORT)))
     {
        printf("(%s) \t\tPMD down\n",hostnm) ;
-       return ;
+       return;
     }
    this_op = htons(PMD_OP_EXIT);
    if (!writen(sock, (char *)&this_op, sizeof(this_op)))

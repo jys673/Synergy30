@@ -3,7 +3,7 @@
 /bin/ps -u `whoami` 2>/dev/null|grep $1 |grep -v grep | grep -v KILL >KILL.temp
 #/bin/ps -x          2>/dev/null|grep $1 |grep -v grep | grep -v KILL>>KILL.temp 
 /bin/cat KILL.temp
-cut -c2-7 KILL.temp | xargs -n1 kill -9
+cut -c1-6 KILL.temp | xargs -n1 kill -9
 #cut -c8-12 KILL.temp | xargs -n1 kill    #OSF1
 /bin/rm KILL.temp
 
