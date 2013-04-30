@@ -1,0 +1,11 @@
+Introduction
+
+PBS is a commonly used parallel batch system for HPC clusters. This release 
+supports PBS by upgrading SynergyV3.0 utilities to include dynamic .sng_hosts
+file generation using $PBS_NODEFILE. A number of related utilities, such as "sds" (start daemons), "kads" (kill all daemons) and KILL (kill by string matching) are updated and tested.
+
+File "jobs.sh" contains an example of PBS job script for Synergy parallel 
+programs.
+
+Justin
+April 2013
