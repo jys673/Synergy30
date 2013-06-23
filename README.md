@@ -7,7 +7,7 @@ The Synergy3.0 runtime is under ~/synergy/bin. It should be included in $PATH. $
 
 The PML (Parallel Markup Lanauge) compiler is under ~/synergy/PML directory. It needs Java and JAVA_HOME path defined to run the jar files. 
 
-The sample applications are packaged in a separate Synergy3.0+Apps.tar.gz file. Uncompressed, there are three subdirectories:
+The sample applications are packaged in a separate git (https://github.com/jys673/Synergy). It can be downloaded as a single Synergy3.0+Apps.tar.gz file. Uncompressed, there are three subdirectories:
 
 ssc -- Solution space compact programs (no superlinear speedup potentials): fractal 	-- a parallel Mandelbrot application with X-Windows,	an ideal massive embarrisingly parallel application. xepp		-- a parallel interactive Mandelbrot application, a program transplanted from PVM. matrix		-- a parallel matrix multiplication system. (Tested in 2013).
 gauss		-- a parallel linear solver using Gaussian Elimination, a demo of complex program-to-program 
